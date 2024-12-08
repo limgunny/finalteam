@@ -11,7 +11,8 @@ export async function POST(request: Request) {
       { message: '게시글이 작성되었습니다.' },
       { status: 201 }
     )
-  } catch (error) {
+  } catch (err) {
+    console.error('Error creating post:', err)
     return NextResponse.json({ error: 'Error creating post' }, { status: 500 })
   }
 }
@@ -21,7 +22,8 @@ export async function GET() {
     await connectMongoDB()
     const posts = await Board.find().sort({ createdAt: -1 })
     return NextResponse.json(posts)
-  } catch (error) {
+  } catch (err) {
+    console.error('Error ', err)
     return NextResponse.json({ error: 'Error fetching posts' }, { status: 500 })
   }
 }

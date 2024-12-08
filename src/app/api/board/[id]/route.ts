@@ -19,7 +19,8 @@ export async function GET(
     await board.save()
 
     return NextResponse.json(board)
-  } catch (error) {
+  } catch (err) {
+    console.error('Error fetching board:', err)
     return NextResponse.json({ error: 'Error fetching board' }, { status: 500 })
   }
 }
@@ -48,9 +49,11 @@ export async function PUT(
     }
 
     return NextResponse.json(updatedBoard)
-  } catch (error) {
+  } catch (err) {
+    // error를 err로 변경하고 콘솔에 로깅
+    console.error('Error updating board:', err)
     return NextResponse.json(
-      { message: '게시글 수정 중 오류가 발생했습니다.' },
+      { message: 'ê²ìê¸ ìì  ì¤ ì¤ë¥ê° ë°ìíìµëë¤.' },
       { status: 500 }
     )
   }
@@ -74,9 +77,11 @@ export async function DELETE(
     }
 
     return NextResponse.json({ message: '게시글이 삭제되었습니다.' })
-  } catch (error) {
+  } catch (err) {
+    // error를 err로 변경하고 콘솔에 로깅
+    console.error('Error deleting board:', err)
     return NextResponse.json(
-      { message: '게시글 삭제 중 오류가 발생했습니다.' },
+      { message: 'ê²ìê¸ ì­ì  ì¤ ì¤ë¥ê° ë°ìíìµëë¤.' },
       { status: 500 }
     )
   }

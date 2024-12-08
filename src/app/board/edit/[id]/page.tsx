@@ -4,15 +4,20 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
-interface Board {
-  _id: string
-  title: string
-  content: string
-  image?: string
-}
+// interface Board {
+//   _id: string
+//   title: string
+//   content: string
+//   image?: string
+// }
 
 export default function EditBoardPage() {
-  const { data: session } = useSession()
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/login')
+    },
+  })
   const params = useParams()
   const router = useRouter()
   const id = params?.id
@@ -38,6 +43,12 @@ export default function EditBoardPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if (!session) {
+      alert('로그인이 필요합니다.')
+      router.push('/login')
+      return
+    }
 
     let imageUrl = currentImage
 
@@ -79,7 +90,9 @@ export default function EditBoardPage() {
       console.error('Error:', error)
     }
   }
-
+  if (!session) {
+    return <div>Loading...</div>
+  }
   return (
     <div className="container mx-auto max-w-2xl p-4">
       <h1 className="text-2xl font-bold mb-6">게시글 수정</h1>
